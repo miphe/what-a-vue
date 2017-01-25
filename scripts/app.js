@@ -7,13 +7,10 @@ var ingredients = [
 
   /* Base */
   { category: 'base', name: 'Dough', price: '1.8', mandatory: true },
-  { category: 'base', name: 'Dough (Gluten Free)', price: '1.8' },
 
   /* Vegetarian */
   { category: 'vegetarian', name: 'Cheese', price: '0.5' },
-  { category: 'vegetarian', name: 'Cheese (Gluten Free)', price: '0.5' },
   { category: 'vegetarian', name: 'Sour Cream', price: '0.5' },
-  { category: 'vegetarian', name: 'Sour Cream (Gluten Free)', price: '0.5' },
   { category: 'vegetarian', name: 'Egg', price: '1' },
 
   /* Vegan */
@@ -25,12 +22,23 @@ var ingredients = [
   { category: 'vegan', name: 'Ruccola', price: '0.8' },
   { category: 'vegan', name: 'Hot Pepper', price: '0.3' },
   { category: 'vegan', name: 'Artichoke', price: '0.3' },
+  { category: 'vegan', name: 'Pineapple', price: '0.5' },
+  { category: 'vegan', name: 'Mushrooms', price: '0.4' },
+  { category: 'vegan', name: 'Black Olives', price: '0.8' },
+  { category: 'vegan', name: 'Broccoli', price: '0.5' },
+  { category: 'vegan', name: 'Spinach', price: '0.5' },
+  { category: 'vegan', name: 'Tomatoes', price: '0.3' },
 
   /* Meat */
   { category: 'meat', name: 'Ham', price: '1' },
   { category: 'meat', name: 'Bacon', price: '1' },
   { category: 'meat', name: 'Salami', price: '0.8' },
-  { category: 'meat', name: 'Shrimps', price: '1.2' }
+  { category: 'meat', name: 'Shrimps', price: '1.2' },
+  { category: 'meat', name: 'Sausage', price: '1' },
+  { category: 'meat', name: 'Chicken', price: '1' },
+  { category: 'meat', name: 'Meatballs', price: '1.2' },
+  { category: 'meat', name: 'Beef', price: '1.2' },
+  { category: 'meat', name: 'Parma Ham', price: '1.2' }
 ];
 
 var categories = [
@@ -40,9 +48,10 @@ var categories = [
   { name: 'meat', selected: true }
 ];
 
-var preparations = [
-  { name: 'Standard Flat' },
-  { name: 'Folded' }
+var meta = [
+  { id: 1, name: 'Standard Flat', conflicts: 2 },
+  { id: 2, name: 'Folded', conflicts: 1 },
+  { id: 3, name: 'Gluten Free' }
 ];
 
 var app = new Vue({
@@ -50,7 +59,7 @@ var app = new Vue({
   data: {
     categories: categories,
     ingredients: ingredients,
-    preparations: preparations
+    meta: meta
   },
   computed: {
     selectedCategories: function() {

@@ -1,0 +1,19 @@
+
+.section-prominent {
+  margin-top: 4rem;
+  background-color: purple;
+
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.section-prominent h1 {
+  color: white;
+  font-size: 5rem;
+  line-height: .6;
+}
+
+.section-prominent p {
+  color: #CFA5CF;
+  font-size: 2rem;
+}
