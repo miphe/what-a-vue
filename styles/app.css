@@ -17,3 +17,31 @@
   color: #CFA5CF;
   font-size: 2rem;
 }
+
+.ingredient-item {
+  position: relative;
+  list-style: none;
+  width: 100px;
+  height: 50px;
+  margin-top: 35px;
+  text-align: center;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.ingredient-item:before {
+  position: absolute;
+  display: block;
+  top: -35px;
+  left: 50%;
+  margin-left: -15px;
+  content: '';
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 10px solid black;
+}
+
+.ingredient-item.is-selected:before {
+  border-color: green;
+}

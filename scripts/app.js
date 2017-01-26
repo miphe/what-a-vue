@@ -6,39 +6,39 @@
 var ingredients = [
 
   /* Base */
-  { category: 'base', name: 'Dough', price: '1.8', mandatory: true },
+  { selected: true, category: 'base', name: 'Dough', price: '1.8', mandatory: true },
 
   /* Vegetarian */
-  { category: 'vegetarian', name: 'Cheese', price: '0.5' },
-  { category: 'vegetarian', name: 'Sour Cream', price: '0.5' },
-  { category: 'vegetarian', name: 'Egg', price: '1' },
+  { selected: false, category: 'vegetarian', name: 'Cheese', price: '0.5' },
+  { selected: false, category: 'vegetarian', name: 'Sour Cream', price: '0.5' },
+  { selected: false, category: 'vegetarian', name: 'Egg', price: '1' },
 
   /* Vegan */
-  { category: 'vegan', name: 'Tomato Sauce', price: '0.1' },
-  { category: 'vegan', name: 'Bell Pepper', price: '0.5' },
-  { category: 'vegan', name: 'Yellow Onion', price: '0.3' },
-  { category: 'vegan', name: 'Red Onion', price: '0.3' },
-  { category: 'vegan', name: 'Garlic', price: '0.3' },
-  { category: 'vegan', name: 'Ruccola', price: '0.8' },
-  { category: 'vegan', name: 'Hot Pepper', price: '0.3' },
-  { category: 'vegan', name: 'Artichoke', price: '0.3' },
-  { category: 'vegan', name: 'Pineapple', price: '0.5' },
-  { category: 'vegan', name: 'Mushrooms', price: '0.4' },
-  { category: 'vegan', name: 'Black Olives', price: '0.8' },
-  { category: 'vegan', name: 'Broccoli', price: '0.5' },
-  { category: 'vegan', name: 'Spinach', price: '0.5' },
-  { category: 'vegan', name: 'Tomatoes', price: '0.3' },
+  { selected: true, category: 'vegan', name: 'Tomato Sauce', price: '0.1' },
+  { selected: false, category: 'vegan', name: 'Bell Pepper', price: '0.5' },
+  { selected: false, category: 'vegan', name: 'Yellow Onion', price: '0.3' },
+  { selected: false, category: 'vegan', name: 'Red Onion', price: '0.3' },
+  { selected: false, category: 'vegan', name: 'Garlic Sauce', price: '0.3' },
+  { selected: false, category: 'vegan', name: 'Ruccola', price: '0.8' },
+  { selected: false, category: 'vegan', name: 'Hot Pepper', price: '0.3' },
+  { selected: false, category: 'vegan', name: 'Artichoke Hearts', price: '0.3' },
+  { selected: false, category: 'vegan', name: 'Pineapple', price: '0.5' },
+  { selected: false, category: 'vegan', name: 'Mushrooms', price: '0.4' },
+  { selected: false, category: 'vegan', name: 'Black Olives', price: '0.8' },
+  { selected: false, category: 'vegan', name: 'Broccoli', price: '0.5' },
+  { selected: false, category: 'vegan', name: 'Spinach', price: '0.5' },
+  { selected: false, category: 'vegan', name: 'Tomatoes', price: '0.3' },
 
   /* Meat */
-  { category: 'meat', name: 'Ham', price: '1' },
-  { category: 'meat', name: 'Bacon', price: '1' },
-  { category: 'meat', name: 'Salami', price: '0.8' },
-  { category: 'meat', name: 'Shrimps', price: '1.2' },
-  { category: 'meat', name: 'Sausage', price: '1' },
-  { category: 'meat', name: 'Chicken', price: '1' },
-  { category: 'meat', name: 'Meatballs', price: '1.2' },
-  { category: 'meat', name: 'Beef', price: '1.2' },
-  { category: 'meat', name: 'Parma Ham', price: '1.2' }
+  { selected: false, category: 'meat', name: 'Ham', price: '1' },
+  { selected: false, category: 'meat', name: 'Bacon', price: '1' },
+  { selected: false, category: 'meat', name: 'Salami', price: '0.8' },
+  { selected: false, category: 'meat', name: 'Shrimps', price: '1.2' },
+  { selected: false, category: 'meat', name: 'Sausage', price: '1' },
+  { selected: false, category: 'meat', name: 'Chicken', price: '1' },
+  { selected: false, category: 'meat', name: 'Meatballs', price: '1.2' },
+  { selected: false, category: 'meat', name: 'Beef', price: '1.2' },
+  { selected: false, category: 'meat', name: 'Parma Ham', price: '1.2' }
 ];
 
 var categories = [
@@ -49,41 +49,23 @@ var categories = [
 ];
 
 var meta = [
-  { id: 1, name: 'Standard Flat', conflicts: 2 },
-  { id: 2, name: 'Folded', conflicts: 1 },
-  { id: 3, name: 'Gluten Free' }
+  { selected: true, id: 1, name: 'Standard Flat Pizza', conflicts: 2 },
+  { selected: false, id: 2, name: 'Folded Pizza', conflicts: 1 },
+  { selected: false, id: 3, name: 'Gluten Free' },
+  { selected: false, id: 4, name: 'Family Pizza Size', conflicts: [5, 6] },
+  { selected: true, id: 5, name: 'Medium Pizza Size', conflicts: [4, 6] },
+  { selected: false, id: 6, name: 'Small Pizza Size', conflicts: [4, 5] }
 ];
 
+Vue.filter('capitalize', function(value) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+});
+
 var app = new Vue({
-  el: '#app',
+  el: '#components',
   data: {
     categories: categories,
     ingredients: ingredients,
     meta: meta
-  },
-  computed: {
-    selectedCategories: function() {
-      return _.filter(this.categories, 'selected');
-    },
-    relevantIngredients: function() {
-      var _categories = this.categories;
-      return _.filter(this.ingredients, function(ingredient) {
-        return _.find(_categories, { name: ingredient.category }).selected;
-      });
-    }
-  },
-  methods: {
-    countInCategory: function(category) {
-      return _.filter(this.ingredients, { category: category }).length;
-    },
-    toggleCategory: function(category) {
-      var c = _.find(this.categories, { name: category.name });
-      c.selected = !c.selected;
-    }
-  },
-  filters: {
-    capitalize: function(value) {
-      return value.charAt(0).toUpperCase() + value.slice(1);
-    }
   }
 });
