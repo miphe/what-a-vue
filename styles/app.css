@@ -1,8 +1,7 @@
 
 .section-prominent {
   margin-top: 4rem;
-  background-color: purple;
-
+  background-color: #6f5499;
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
@@ -10,12 +9,19 @@
 .section-prominent h1 {
   color: white;
   font-size: 5rem;
-  line-height: .6;
 }
 
 .section-prominent p {
-  color: #CFA5CF;
-  font-size: 2rem;
+  color: #cdbfe3;
+  font-size: 2.4rem;
+}
+
+.section-content {
+  padding-top: 4rem
+}
+
+.content-row {
+  margin-bottom: 2rem;
 }
 
 .ingredient-item {
@@ -23,16 +29,17 @@
   list-style: none;
   width: 100px;
   height: 50px;
-  margin-top: 35px;
+  padding-top: 35px;
   text-align: center;
   white-space: nowrap;
   display: inline-block;
+  margin-bottom: 20px;
 }
 
 .ingredient-item:before {
   position: absolute;
   display: block;
-  top: -35px;
+  top: 0;
   left: 50%;
   margin-left: -15px;
   content: '';
