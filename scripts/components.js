@@ -7,6 +7,9 @@ Vue.component('category-selection', {
               v-bind:class="{ \'btn-success\': category.selected }"\
               class="btn"\
               type="button">\
+        <span class="glyphicon"\
+              aria-hidden="true"\
+              v-bind:class="{ \'glyphicon-eye-open\': category.selected, \'glyphicon-eye-close\': !category.selected }"></span>\
         {{ category.name | capitalize }} <span class="badge">{{ countInCategory(category.name) }}</span>\
       </button>\
     </div>\
@@ -26,6 +29,9 @@ Vue.component('category-selection', {
 
 Vue.component('ingredient-search-filter', {
   template: '<div class="input-group">\
+      <span class="input-group-addon">\
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>\
+      </span>\
       <input type="text"\
              class="form-control"\
              placeholder="Search for..."\
@@ -35,7 +41,7 @@ Vue.component('ingredient-search-filter', {
                 type="button"\
                 aria-label="Close"\
                 v-on:click="clearSearchQuery">\
-          <span aria-hidden="true">&times;</span>\
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>\
         </button>\
       </span>\
     </div>',
@@ -58,7 +64,7 @@ Vue.component('ingredient-search-filter', {
   }
 });
 
-Vue.component('total-price', {
+Vue.component('current-price', {
   template: '<code>€{{total}}</code>',
   props: ['ingredients'],
   computed: {
@@ -123,14 +129,31 @@ Vue.component('ingredient-selection', {
 Vue.component('selected-pizza', {
   template: '<div>\
     <h3>Ingredients</h3>\
+    <p><span class="label label-primary">{{comprisedSelection}}</span></p>\
     <ul>\
       <li v-for="ingredient in selectedIngredients">{{ingredient.name}}</li>\
     </ul>\
   </div>',
-  props: ['ingredients'],
+  props: ['ingredients', 'compounds'],
   computed: {
     selectedIngredients: function() {
       return _.filter(this.ingredients, 'selected');
+    },
+    comprisedSelection: function() {
+      var res;
+      var selection = _.map(this.selectedIngredients, 'name');
+      _.each(this.compounds, function(compound) {
+        var sel_len = selection.length;
+        var com_len = compound.components.length;
+        var int_len = _.intersection(compound.components, selection).length;
+
+        // Checks if the selection matches a recepie by matching the length
+        // bewtween expected, selected, and intersected arrays.
+        if(_.every([sel_len, com_len], function(len) { return _.isEqual(len, int_len) })) {
+          res = compound.name;
+        }
+      });
+      return res;
     }
   }
 });
@@ -146,6 +169,30 @@ Vue.component('selected-options', {
   computed: {
     selectedOptions: function() {
       return _.filter(this.options, 'selected');
+    }
+  }
+});
+
+Vue.component('clear-button', {
+  template: '<button type="button" class="btn btn-default pull-right">\
+    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>\
+    Clear\
+  </button>',
+  methods: {
+    clear: function() {
+      this.$emit('clear-current');
+    }
+  }
+});
+
+Vue.component('done-button', {
+  template: '<button type="button" class="btn btn-primary">\
+    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>\
+    Done!\
+  </button>',
+  methods: {
+    done: function() {
+      this.$emit('done-current');
     }
   }
 });

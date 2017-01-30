@@ -1,9 +1,17 @@
 
 .section-prominent {
+  position: relative;
   margin-top: 4rem;
-  background-color: #6f5499;
   padding-top: 2rem;
   padding-bottom: 2rem;
+  background-image: url('../img/mixed-fruits.jpg');
+  background-size: 100%;
+}
+
+.section-prominent .container {
+  position: relative;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
 .section-prominent h1 {
@@ -12,8 +20,18 @@
 }
 
 .section-prominent p {
-  color: #cdbfe3;
+  color: #ccc;
   font-size: 2.4rem;
+}
+
+.full-darken {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+  opacity: .5;
 }
 
 .section-content {

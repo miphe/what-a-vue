@@ -8,6 +8,7 @@
   </head>
   <body>
     <div class="section-prominent">
+      <div class="full-darken"></div>
       <div class="container">
         <h1>Make your Pizza</h1>
         <p>Enjoy a pizza, with Vue.js</p>
@@ -17,21 +18,20 @@
       <div class="row">
         <div class="col-md-8">
           <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">Build Your Pizza</h3>
-            </div>
             <div class="panel-body">
-              <form class="content-row clearfix">
-                <div class="col-md-7">
+              <div class="content-row clearfix">
+                <div class="col-md-12">
                   <category-selection v-bind:categories="categories"
                                       v-bind:ingredients="ingredients"></category-selection>
                 </div>
-                <div class="col-md-5">
+              </div>
+              <div class="content-row clearfix">
+                <div class="col-md-12">
                   <ingredient-search-filter v-bind:query="searchQuery"
                                             v-on:search-query-change="queryChange"
                                             v-on:search-query-clear="queryClear"></ingredient-search-filter>
                 </div>
-              </form>
+              </div>
               <ingredient-selection v-bind:categories="categories"
                                     v-bind:ingredients="ingredients"
                                     v-bind:query="searchQuery"></ingredient-selection>
@@ -39,9 +39,14 @@
           </div>
         </div>
         <div class="col-md-4">
-          <h2>Your Order: <total-price v-bind:ingredients="ingredients"></total-price></h2>
-          <selected-pizza v-bind:ingredients="ingredients"></selected-pizza>
+          <h2>Current: <current-price v-bind:ingredients="ingredients"></current-price></h2>
+          <selected-pizza v-bind:ingredients="ingredients"
+                          v-bind:compounds="compounds"></selected-pizza>
           <selected-options v-bind:options="meta"></selected-options>
+          <done-button></done-button>
+          <clear-button></clear-button>
+          <hr />
+          <h2>Total Order:</h2>
         </div>
       </div>
     </div>
