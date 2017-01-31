@@ -139,8 +139,10 @@ var app = new Vue({
     categories: categories,
     ingredients: ingredients,
     meta: meta,
+    count: 1,
     searchQuery: null,
-    compounds: compounds
+    compounds: compounds,
+    accumulation: []
   },
   methods: {
     queryChange: function(query) {
@@ -148,6 +150,29 @@ var app = new Vue({
     },
     queryClear: function() {
       this.searchQuery = null;
+    },
+    composeCurrentItem: function() {
+      var _s = _.filter(this.ingredients, 'selected');
+      var _p = _.round(_.sumBy(_s, 'price') * this.count, 2);
+      return {
+        name: 'Custom pizza',
+        ingredients: _s,
+        price:_p,
+        count: this.count,
+        options: this.meta
+      };
+    },
+    newItem: function() {
+      this.accumulation.push(this.composeCurrentItem());
+    },
+    addCoundOfSelection: function() {
+      this.count++;
+    },
+    subCountOfSelection: function() {
+      this.count--;
+    },
+    removeItemFromAccumulation: function(index) {
+      this.accumulation.splice(index, 1);
     }
   }
 });

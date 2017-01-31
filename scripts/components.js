@@ -66,11 +66,11 @@ Vue.component('ingredient-search-filter', {
 
 Vue.component('current-price', {
   template: '<code>€{{total}}</code>',
-  props: ['ingredients'],
+  props: ['ingredients', 'count'],
   computed: {
     total: function() {
       var _selectedIngredients = _.filter(this.ingredients, 'selected');
-      return _.round(_.sumBy(_selectedIngredients, 'price'), 2);
+      return _.round(_.sumBy(_selectedIngredients, 'price') * this.count, 2);
     }
   }
 });
@@ -174,11 +174,38 @@ Vue.component('selected-options', {
     <ul>\
       <li v-for="option in selectedOptions">{{ option.name }}</li>\
     </ul>\
+    <div class="input-group content-row">\
+      <input type="text"\
+             class="form-control"\
+             v-model="count">\
+      <span class="input-group-btn">\
+      <button class="btn btn-default"\
+              type="button"\
+              aria-label="Sub"\
+              v-on:click="subtract">\
+        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>\
+      </button>\
+        <button class="btn btn-default"\
+                type="button"\
+                aria-label="Add"\
+                v-on:click="increment">\
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>\
+        </button>\
+      </span>\
+    </div>\
   </div>',
-  props: ['options'],
+  props: ['options', 'count'],
   computed: {
     selectedOptions: function() {
       return _.filter(this.options, 'selected');
+    }
+  },
+  methods: {
+    increment: function() {
+      this.$emit('add-count-of-selection');
+    },
+    subtract: function() {
+      this.$emit('sub-count-of-selection');
     }
   }
 });
@@ -196,13 +223,39 @@ Vue.component('clear-button', {
 });
 
 Vue.component('done-button', {
-  template: '<button type="button" class="btn btn-primary">\
+  template: '<button type="button" class="btn btn-primary" v-on:click="done">\
     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>\
-    Done!\
+    Add Pizza\
   </button>',
   methods: {
     done: function() {
       this.$emit('done-current');
+    }
+  }
+});
+
+Vue.component('accumulated-total', {
+  template: '<small>{{total}}</small>',
+  props: ['accumulation'],
+  computed: {
+    total: function() {
+      var _a = this.accumulation;
+      return _.round(_.sumBy(_a, 'price'), 2);
+    }
+  }
+});
+
+Vue.component('pizza-basket', {
+  template: '<ul>\
+    <li v-for="(item, i) in accumulation">\
+      <span v-on:click="remove(i)" class="glyphicon glyphicon-remove" aria-hidden="true"></span> \
+      {{ item.name }} (x<strong>{{item.count}}</strong>: €{{ item.price }})\
+    </li>\
+  </ul>',
+  props: ['accumulation'],
+  methods: {
+    remove: function(i) {
+      this.$emit('remove-item', i);
     }
   }
 });
