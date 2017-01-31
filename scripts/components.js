@@ -131,7 +131,9 @@ Vue.component('selected-pizza', {
     <h3>Ingredients</h3>\
     <p><span class="label label-primary">{{comprisedSelection}}</span></p>\
     <ul>\
-      <li v-for="ingredient in selectedIngredients">{{ingredient.name}}</li>\
+      <li v-for="ingredient in selectedIngredients">\
+        <span v-on:click="unselect(ingredient)" class="glyphicon glyphicon-remove" aria-hidden="true"></span> {{ingredient.name}}\
+      </li>\
     </ul>\
   </div>',
   props: ['ingredients', 'compounds'],
@@ -154,6 +156,14 @@ Vue.component('selected-pizza', {
         }
       });
       return res;
+    }
+  },
+  methods: {
+    // Mutates state.
+    // TODO: refactor, handle through events instead.
+    unselect: function(ingredient) {
+      if (ingredient.mandatory) { return false; }
+      ingredient.selected = !ingredient.selected;
     }
   }
 });
