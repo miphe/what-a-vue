@@ -48,6 +48,16 @@ var mxSelectedComponents = {
   },
 };
 
+// Mixin dependencies;
+// - none
+var mxEmitClearSelection = {
+  methods: {
+    clearSelection: function() {
+      this.$emit('clear-selection');
+    }
+  }
+};
+
 // COMPONENTS
 
 Vue.component('category-selection', {
@@ -227,15 +237,13 @@ Vue.component('selected-options', {
 });
 
 Vue.component('clear-button', {
-  template: '<button type="button" class="btn btn-default pull-right">\
+  template: '<button type="button"\
+                     class="btn btn-default pull-right"\
+                     v-on:click="clearSelection">\
     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>\
     Clear\
   </button>',
-  methods: {
-    clear: function() {
-      this.$emit('clear-current');
-    }
-  }
+  mixins: [mxEmitClearSelection]
 });
 
 Vue.component('done-button', {

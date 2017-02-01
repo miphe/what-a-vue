@@ -3,7 +3,7 @@
  * What a Vue - JS example app.
  */
 
-var ingredients = [
+var df_ingredients = [
 
   /* Base */
   { selected: true, category: 'base', name: 'Dough', price: 1.8, mandatory: true },
@@ -110,7 +110,7 @@ var ingredients = [
   { selected: false, category: 'sea-food', name: 'Whitebait', price: 1 }
 ];
 
-var categories = [
+var df_categories = [
   { name: 'base', selected: true },
   { name: 'vegetarian', selected: true },
   { name: 'vegan', selected: true },
@@ -118,7 +118,8 @@ var categories = [
   { name: 'sea-food', selected: true }
 ];
 
-var meta = [
+// TODO: refactor the way we reset to these values.
+var df_meta = [
   { selected: true, id: 1, name: 'Standard Flat Pizza', conflicts: 2 },
   { selected: false, id: 2, name: 'Folded Pizza', conflicts: 1 },
   { selected: false, id: 3, name: 'Gluten Free' },
@@ -127,7 +128,7 @@ var meta = [
   { selected: false, id: 6, name: 'Small Pizza Size', conflicts: [4, 5] }
 ];
 
-var compounds = [
+var df_compounds = [
   { name: 'Vesuvio', components: ['Dough', 'Tomato Sauce', 'Cheese'] },
   { name: 'Capriciosa', components: ['Dough', 'Tomato Sauce', 'Cheese', 'Ham'], meta: [2] },
   { name: 'Proscuitto e Funghi', components: ['Dough', 'Tomato Sauce', 'Cheese', 'Proscuitto', 'Fungi'] },
@@ -136,12 +137,12 @@ var compounds = [
 var app = new Vue({
   el: '#components',
   data: {
-    categories: categories,
-    ingredients: ingredients,
-    meta: meta,
+    categories: df_categories,
+    ingredients: df_ingredients,
+    compounds: df_compounds,
+    meta: df_meta,
     count: 1,
     searchQuery: null,
-    compounds: compounds,
     accumulation: []
   },
   methods: {
@@ -164,6 +165,7 @@ var app = new Vue({
     },
     newItem: function() {
       this.accumulation.push(this.composeCurrentItem());
+      this.clearSelection();
     },
     addCoundOfSelection: function() {
       this.count++;
@@ -173,6 +175,35 @@ var app = new Vue({
     },
     removeItemFromAccumulation: function(index) {
       this.accumulation.splice(index, 1);
+    },
+    clearSelection: function() {
+
+      // Resets ingredient selections
+      this.ingredients = df_ingredients;
+      _.each(this.ingredients, function(ingredient) {
+
+        var defaultSelected = _.some(['Dough', 'Tomato Sauce'], function(name) {
+          return _.isEqual(ingredient.name, name);
+        });
+
+        ingredient.selected = defaultSelected;
+      });
+
+      // Resets meta
+      // TODO: refactor how we reset these values.
+      this.meta = [
+        { selected: true, id: 1, name: 'Standard Flat Pizza', conflicts: 2 },
+        { selected: false, id: 2, name: 'Folded Pizza', conflicts: 1 },
+        { selected: false, id: 3, name: 'Gluten Free' },
+        { selected: false, id: 4, name: 'Family Pizza Size', conflicts: [5, 6] },
+        { selected: true, id: 5, name: 'Medium Pizza Size', conflicts: [4, 6] },
+        { selected: false, id: 6, name: 'Small Pizza Size', conflicts: [4, 5] }
+      ];
+
+      // Resets to default count
+      this.count = 1;
+
+      // No need to reset compunds or categories
     }
   }
 });
