@@ -186,7 +186,8 @@ Vue.component('selected-pizza', {
     <p><span class="label label-primary">{{comprisedSelection}}</span></p>\
     <ul>\
       <li v-for="component in selectedComponents">\
-        <span v-on:click="toggleSelected(component)" class="glyphicon glyphicon-remove" aria-hidden="true"></span> {{component.name}}\
+        <span v-if="!component.mandatory" v-on:click="toggleSelected(component)" class="glyphicon glyphicon-remove" aria-hidden="true"></span> \
+        {{component.name}}\
       </li>\
     </ul>\
   </div>',
