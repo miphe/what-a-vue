@@ -1,4 +1,55 @@
 
+// MIXINS
+
+// Mixin dependencies;
+// - this.compounds          # compounds object
+// - this.selectedComponents # selected components mixin
+var mxComprisedSelection = {
+  computed: {
+    comprisedSelection: function() {
+      var res;
+      var selection = _.map(this.selectedComponents, 'name');
+      _.each(this.compounds, function(compound) {
+        var sel_len = selection.length;
+        var com_len = compound.components.length;
+        var int_len = _.intersection(compound.components, selection).length;
+
+        // Checks if the selection matches a recepie by matching the length
+        // bewtween expected, selected, and intersected arrays.
+        if(_.every([sel_len, com_len], function(len) { return _.isEqual(len, int_len) })) {
+          res = compound.name;
+        }
+      });
+      return res;
+    }
+  }
+};
+
+// Mixin dependencies;
+// - none
+var mxToggleSelected = {
+  methods: {
+    // Mutates state.
+    // TODO: refactor, handle through events instead.
+    toggleSelected: function(component) {
+      if (component.mandatory) { return false; }
+      component.selected = !component.selected;
+    }
+  }
+};
+
+// Mixin dependencies;
+// - this.compounds # compounds object
+var mxSelectedComponents = {
+  computed: {
+    selectedComponents: function() {
+      return _.filter(this.components, 'selected');
+    }
+  },
+};
+
+// COMPONENTS
+
 Vue.component('category-selection', {
   template: '<div>\
     <div class="btn-group" role="group">\
@@ -78,13 +129,14 @@ Vue.component('current-price', {
 Vue.component('ingredient-selection-list', {
   template: '<ul>\
       <li v-for="ingredient in filteredIngredients"\
-          v-on:click="toggleIngredient(ingredient)"\
+          v-on:click="toggleSelected(ingredient)"\
           v-bind:class="{ \'is-selected\': ingredient.selected }"\
           class="ingredient-item">\
         {{ingredient.name}}\
       </li>\
     </ul>',
   props: ['ingredients', 'searchQuery'],
+  mixins: [mxToggleSelected],
   computed: {
     filteredIngredients: function () {
       if (!this.searchQuery) { return this.ingredients; }
@@ -94,14 +146,6 @@ Vue.component('ingredient-selection-list', {
         var _qname = _.lowerCase(_this.searchQuery);
         return _name.indexOf(_qname) !== -1;
       });
-    }
-  },
-  methods: {
-    // Mutates state.
-    // TODO: refactor, handle through events instead.
-    toggleIngredient: function(ingredient) {
-      if (ingredient.mandatory) { return false; }
-      ingredient.selected = !ingredient.selected;
     }
   }
 });
@@ -131,41 +175,13 @@ Vue.component('selected-pizza', {
     <h3>Ingredients</h3>\
     <p><span class="label label-primary">{{comprisedSelection}}</span></p>\
     <ul>\
-      <li v-for="ingredient in selectedIngredients">\
-        <span v-on:click="unselect(ingredient)" class="glyphicon glyphicon-remove" aria-hidden="true"></span> {{ingredient.name}}\
+      <li v-for="component in selectedComponents">\
+        <span v-on:click="toggleSelected(component)" class="glyphicon glyphicon-remove" aria-hidden="true"></span> {{component.name}}\
       </li>\
     </ul>\
   </div>',
-  props: ['ingredients', 'compounds'],
-  computed: {
-    selectedIngredients: function() {
-      return _.filter(this.ingredients, 'selected');
-    },
-    comprisedSelection: function() {
-      var res;
-      var selection = _.map(this.selectedIngredients, 'name');
-      _.each(this.compounds, function(compound) {
-        var sel_len = selection.length;
-        var com_len = compound.components.length;
-        var int_len = _.intersection(compound.components, selection).length;
-
-        // Checks if the selection matches a recepie by matching the length
-        // bewtween expected, selected, and intersected arrays.
-        if(_.every([sel_len, com_len], function(len) { return _.isEqual(len, int_len) })) {
-          res = compound.name;
-        }
-      });
-      return res;
-    }
-  },
-  methods: {
-    // Mutates state.
-    // TODO: refactor, handle through events instead.
-    unselect: function(ingredient) {
-      if (ingredient.mandatory) { return false; }
-      ingredient.selected = !ingredient.selected;
-    }
-  }
+  mixins: [mxComprisedSelection, mxSelectedComponents, mxToggleSelected],
+  props: ['components', 'compounds']
 });
 
 Vue.component('selected-options', {

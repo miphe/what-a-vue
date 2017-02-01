@@ -155,7 +155,7 @@ var app = new Vue({
       var _s = _.filter(this.ingredients, 'selected');
       var _p = _.round(_.sumBy(_s, 'price') * this.count, 2);
       return {
-        name: 'Custom pizza',
+        name: 'Custom pizza', // TODO: set name of pizza, if there is one.
         ingredients: _s,
         price:_p,
         count: this.count,
