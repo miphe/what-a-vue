@@ -47,7 +47,8 @@
                             v-bind:count="count"
                             v-on:add-count-of-selection="addCoundOfSelection"
                             v-on:sub-count-of-selection="subCountOfSelection"></selected-options>
-          <done-button v-on:done-current="newItem"></done-button>
+          <done-button v-on:done-current="newItem"
+                       v-bind:count="count"></done-button>
           <clear-button v-on:clear-selection="clearSelection"></clear-button>
           <hr />
           <h2>Total Order: <accumulated-total v-bind:accumulation="accumulation"></accumulated-total></h2>

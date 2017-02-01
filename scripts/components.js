@@ -247,10 +247,19 @@ Vue.component('clear-button', {
 });
 
 Vue.component('done-button', {
-  template: '<button type="button" class="btn btn-primary" v-on:click="done">\
+  template: '<button type="button" class="btn btn-primary" v-bind:disabled="disabledButton" v-on:click="done">\
     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>\
-    Add Pizza\
+    {{ text }}\
   </button>',
+  props: ['count'],
+  computed: {
+    disabledButton: function() {
+      return this.count < 1;
+    },
+    text: function() {
+      return this.count > 1 ? 'Add Pizzas' : 'Add Pizza';
+    }
+  },
   methods: {
     done: function() {
       this.$emit('done-current');
