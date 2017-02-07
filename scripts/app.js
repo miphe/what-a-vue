@@ -138,7 +138,7 @@ var app = new Vue({
   el: '#components',
   data: {
     categories: df_categories,
-    ingredients: df_ingredients,
+    components: df_ingredients,
     compounds: df_compounds,
     meta: df_meta,
     count: 1,
@@ -152,11 +152,31 @@ var app = new Vue({
     queryClear: function() {
       this.searchQuery = null;
     },
+    comprisedSelection: function() {
+      var res;
+      var selection = _.map(this.selectedComponents(), 'name');
+      _.each(this.compounds, function(compound) {
+        var sel_len = selection.length;
+        var com_len = compound.components.length;
+        var int_len = _.intersection(compound.components, selection).length;
+        
+        // Checks if the selection matches a recepie by matching the length
+        // bewtween expected, selected, and intersected arrays.
+        if(_.every([sel_len, com_len], function(len) { return _.isEqual(len, int_len) })) {
+          res = compound.name;
+        }
+      });
+      return res;
+    },
+    selectedComponents: function() {
+      return _.filter(this.components, 'selected');
+    },
     composeCurrentItem: function() {
-      var _s = _.filter(this.ingredients, 'selected');
+      var _n = this.comprisedSelection();
+      var _s = this.selectedComponents();
       var _p = _.round(_.sumBy(_s, 'price') * this.count, 2);
       return {
-        name: 'Custom pizza', // TODO: set name of pizza, if there is one.
+        name: _n || 'Custom pizza',
         ingredients: _s,
         price:_p,
         count: this.count,
@@ -179,14 +199,13 @@ var app = new Vue({
     clearSelection: function() {
 
       // Resets ingredient selections
-      this.ingredients = df_ingredients;
-      _.each(this.ingredients, function(ingredient) {
+      _.each(this.components, function(component) {
 
         var defaultSelected = _.some(['Dough', 'Tomato Sauce'], function(name) {
-          return _.isEqual(ingredient.name, name);
+          return _.isEqual(component.name, name);
         });
 
-        ingredient.selected = defaultSelected;
+        component.selected = defaultSelected;
       });
 
       // Resets meta

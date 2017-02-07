@@ -3,7 +3,7 @@
 
 // Mixin dependencies;
 // - this.compounds          # compounds object
-// - this.selectedComponents # selected components mixin
+// - this.selectedComponents # mxSelectedComponents mixin
 var mxComprisedSelection = {
   computed: {
     comprisedSelection: function() {
@@ -269,7 +269,7 @@ Vue.component('done-button', {
 });
 
 Vue.component('accumulated-total', {
-  template: '<small>{{total}}</small>',
+  template: '<code>€{{total}}</code>',
   props: ['accumulation'],
   computed: {
     total: function() {
@@ -283,7 +283,9 @@ Vue.component('pizza-basket', {
   template: '<ul>\
     <li v-for="(item, i) in accumulation">\
       <span v-on:click="remove(i)" class="glyphicon glyphicon-remove" aria-hidden="true"></span> \
-      {{ item.name }} (x<strong>{{item.count}}</strong>: €{{ item.price }})\
+      <span class="label label-primary">{{ item.name }}</span> \
+      <span class="badge">{{item.count}}</span> \
+      <span class="text-muted">€{{ item.price }}</span>\
     </li>\
   </ul>',
   props: ['accumulation'],

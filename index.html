@@ -22,7 +22,7 @@
               <div class="content-row clearfix">
                 <div class="col-md-12">
                   <category-selection v-bind:categories="categories"
-                                      v-bind:ingredients="ingredients"></category-selection>
+                                      v-bind:ingredients="components"></category-selection>
                 </div>
               </div>
               <div class="content-row clearfix">
@@ -33,15 +33,15 @@
                 </div>
               </div>
               <ingredient-selection v-bind:categories="categories"
-                                    v-bind:ingredients="ingredients"
+                                    v-bind:ingredients="components"
                                     v-bind:query="searchQuery"></ingredient-selection>
             </div>
           </div>
         </div>
         <div class="col-md-4">
-          <h2>Current: <current-price v-bind:ingredients="ingredients"
+          <h2>Current: <current-price v-bind:ingredients="components"
                                       v-bind:count="count"></current-price></h2>
-          <selected-pizza v-bind:components="ingredients"
+          <selected-pizza v-bind:components="components"
                           v-bind:compounds="compounds"></selected-pizza>
           <selected-options v-bind:options="meta"
                             v-bind:count="count"
