@@ -1,0 +1,32 @@
+{
+  "name": "what-a-vue",
+  "version": "0.1.0",
+  "description": "VueJS test app.",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "gulp-connect": "^5.0.0"
+  },
+  "devDependencies": {
+    "gulp-concat": "^2.6.1",
+    "gulp-connect": "^5.0.0",
+    "gulp-uglify": "^2.0.1",
+    "pump": "^1.0.2"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miphe/what-a-vue.git"
+  },
+  "keywords": [
+    "vue",
+    "vuejs"
+  ],
+  "author": "André Drougge",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/miphe/what-a-vue/issues"
+  },
+  "homepage": "https://github.com/miphe/what-a-vue#readme"
+}

@@ -159,7 +159,7 @@ var app = new Vue({
         var sel_len = selection.length;
         var com_len = compound.components.length;
         var int_len = _.intersection(compound.components, selection).length;
-        
+
         // Checks if the selection matches a recepie by matching the length
         // bewtween expected, selected, and intersected arrays.
         if(_.every([sel_len, com_len], function(len) { return _.isEqual(len, int_len) })) {
